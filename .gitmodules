@@ -1,0 +1,3 @@
+[submodule "ext/evdsptc"]
+	path = ext/evdsptc
+	url = https://github.com/evdrvn/evdsptc.git

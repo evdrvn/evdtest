@@ -1,0 +1,8 @@
+*.o
+*.a
+*.d
+*.gcda
+*.gcno
+tags
+core.*
+*.log
