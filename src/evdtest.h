@@ -14,8 +14,8 @@ extern "C" {
 #include <regex.h>
 #include <time.h>
 
-#ifndef NTRACE
-#define TRACE(fmt, ...) printf("##TRACE## "fmt"\n",##__VA_ARGS__); fflush(stdout)
+#ifdef EVDTRACE
+#define TRACE(fmt, ...) printf("##TRACE## " fmt "\n",##__VA_ARGS__); fflush(stdout)
 #else
 #define TRACE(fmt, ...) (void)sizeof(printf(fmt,##__VA_ARGS__))
 #endif

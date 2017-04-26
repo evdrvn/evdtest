@@ -7,7 +7,7 @@ EXTDIR    = ./ext
 ifeq "$(strip $(SRCDIR))" ""
   SRCDIR  = .
 endif
-INCLUDE   = -I$(SRCDIR) -I$(EXTDIR)/evdsptc/src -I$(EXTDIR)/evdsptc/lua-5.2.4/src
+INCLUDE   = -I$(SRCDIR) -I$(EXTDIR)/evdsptc/src -I$(EXTDIR)/lua-5.2.4/src
 
 SOURCES   = $(wildcard $(SRCDIR)/*.c)
 OBJDIR    = ./src

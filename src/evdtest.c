@@ -300,7 +300,7 @@ static evdtest_error_t evdtest_postevent_impl(const char* eventname, bool lock, 
 
     if(waitdone) waitdone = !evdtest_is_system_thread(pthread_self()) && !evdtest_is_lua_thread(pthread_self());
     ret = evdtest_event_init(&pevent, evdtest_event_handler, eventname, !waitdone, evdtest_event_free);
-    if(ret != EVDSPTC_ERROR_NONE) goto DONE; 
+    if(ret != EVDTEST_ERROR_NONE) goto DONE; 
 
     if(evdsptc_post(&context.evdsptc_ctx, pevent) != EVDSPTC_ERROR_NONE){
         ret = EVDTEST_ERROR_EVDSPTC_FAIL_POST;
@@ -357,11 +357,11 @@ evdtest_error_t evdtest_addobserver(const char* eventname, const char* submitter
     if(ret == EVDTEST_ERROR_INVALID_STATE) goto DONE;
     
     ret = evdtest_event_init(&pevent, evdtest_event_addobserver, eventname, true, evdtest_event_trash);
-    if(ret == EVDSPTC_ERROR_NONE) {
+    if(ret == EVDTEST_ERROR_NONE) {
         eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(pevent);
         if(0 != regcomp(&eventparam->regex_eventname, eventname, REG_EXTENDED | REG_NOSUB | REG_NEWLINE)) ret = EVDTEST_ERROR_FAIL_COMP_REGEX;
     }
-    if(ret != EVDSPTC_ERROR_NONE) goto DONE; 
+    if(ret != EVDTEST_ERROR_NONE) goto DONE; 
     
     if(submitter) strncpy(eventparam->submitter, submitter, (EVDTEST_FUNC_LENGTH - 1));
     else eventparam->submitter[0] = '\0';
