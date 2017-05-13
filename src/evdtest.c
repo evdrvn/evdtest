@@ -23,7 +23,7 @@ evdtest_context_t* evdtest_getcontext(void){
 }
 
 static bool evdtest_is_system_thread(pthread_t thread){
-    return pthread_equal(thread, evdsptc_getthread(&context.evdsptc_ctx));
+    return pthread_equal(thread, ((evdsptc_getthreads(&context.evdsptc_ctx))[0]));
 }
 
 static bool evdtest_is_lua_thread(pthread_t thread){
