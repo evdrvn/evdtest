@@ -15,20 +15,21 @@ extern "C" {
 #include <time.h>
 
 #ifdef EVDTRACE
-#define TRACE(fmt, ...) printf("##TRACE## " fmt "\n",##__VA_ARGS__); fflush(stdout)
+#define TRACE(fmt, ...) printf("##TRACE## %p: " fmt "\n", (void*)pthread_self(), ##__VA_ARGS__); fflush(stdout)
 #else
 #define TRACE(fmt, ...) (void)sizeof(printf(fmt,##__VA_ARGS__))
 #endif
 
-#define EVDTEST_TEST_CASE "EVDTEST_TEST_CASE"
-#define EVDTEST_TEST_DONE "EVDTEST_TEST_DONE"
+#define EVDTEST_ENV_TEST_CASE "EVDTEST_TEST_CASE"
+#define EVDTEST_DONE_FILE "evdtest_done.txt"
 
 #define EVDTEST_SYSTEM_EVENT_HEADER "[EVDTEST] "
 #define EVDTEST_LUA_EVENT_HEADER "[EVDTLUA] "
 #define EVDTEST_ERROR_EVENT_HEADER "[EVDTERR] "
 
+#define EVDTEST_BUFFFER_LENGTH (1024)
 #define EVDTEST_EVENT_LENGTH (512)
-#define EVDTEST_FUNC_LENGTH (128)
+#define EVDTEST_SOURCE_LENGTH (128)
 
 typedef enum{
     EVDTEST_ERROR_NONE = 0,
@@ -44,7 +45,8 @@ typedef enum{
     EVDTEST_ERROR_TIMEOUT,
     EVDTEST_ERROR_CANCELED,
     EVDTEST_ERROR_NOT_DONE,
-    EVDTEST_ERROR_EVDSPTC_FAIL_WAIT
+    EVDTEST_ERROR_EVDSPTC_FAIL_WAIT,
+    EVDTEST_ERROR_COULD_NOT_OPEN_DONEFILE
 } evdtest_error_t;
 
 typedef enum{
@@ -55,6 +57,8 @@ typedef enum{
     EVDTEST_STATUS_DESTROYING,
     EVDTEST_STATUS_DESTROYED
 } evdtest_status_t;
+
+typedef void (*evdtest_eventformat_t)(char* buf, evdsptc_event_t* event);
 
 typedef struct {
     evdsptc_context_t evdsptc_ctx;
@@ -72,13 +76,18 @@ typedef struct {
     bool first_lua_suspended;
     sem_t sem_lua_suspended;
     int timeout;
+    evdtest_eventformat_t formatter;
+    FILE* done_file;
+    void (*error_callback)(void);
 } evdtest_context_t;
 
 typedef struct {
     char eventname[EVDTEST_EVENT_LENGTH];
     regex_t regex_eventname;
     char actual_eventname[EVDTEST_EVENT_LENGTH];
-    char submitter[EVDTEST_FUNC_LENGTH];
+    char source_file[EVDTEST_SOURCE_LENGTH];
+    char source_func[EVDTEST_SOURCE_LENGTH];
+    int source_line;
     pthread_t thread;
     struct timespec timeout;
     int observer_count;
@@ -86,17 +95,24 @@ typedef struct {
     evdsptc_event_t* caught;
 } evdtest_eventparam_t;
 
-extern evdtest_error_t evdtest_start(void);
+extern evdtest_error_t evdtest_start(evdtest_eventformat_t formatter, void (*error_callback)(void));
 extern evdtest_error_t evdtest_join(void);
-extern evdtest_error_t evdtest_addobserver(const char* pattern, const char* submitter, bool capture, int timeout, evdsptc_event_t** event);
-extern evdtest_error_t evdtest_postevent(const char* format, ...);
+extern evdtest_error_t evdtest_addobserver(const char* eventname, const char* file, const char* func, int line, bool capture, int timeout, evdsptc_event_t** event);
+extern evdtest_error_t evdtest_postevent(const char* format, const char* file, const char* func, int line, ...);
+extern evdtest_error_t evdtest_postevent_noblock(const char* format, const char* file, const char* func, int line, ...);
 extern evdtest_error_t evdtest_wait(bool finalize);
-extern char* evdtest_observer_geteventname(evdsptc_event_t* event);
-extern void evdtest_observer_destroy(evdsptc_event_t* event);
+extern char* evdtest_observer_geteventname(evdsptc_event_t* observer);
+extern void evdtest_observer_destroy(evdsptc_event_t* observer);
 extern void evdtest_abort(void);
-extern evdtest_error_t evdtest_observer_trywait(evdsptc_event_t* event);
+extern evdtest_error_t evdtest_observer_trywait(evdsptc_event_t* observer);
 extern void evdtest_setdefaulttimeout(int timeout);
-extern void  evdtest_observer_releaseevent(evdsptc_event_t* event);
+extern void evdtest_observer_releaseevent(evdsptc_event_t* observer);
+extern void evdtest_eventformat_simple(char* buf, evdsptc_event_t* event);
+extern void evdtest_eventformat_with_source(char* buf, evdsptc_event_t* event);
+
+#define EVDTEST_ADDOBSERVER(ptn, capture, timeout, observer) evdtest_addobserver(ptn, __FILE__, __func__, __LINE__, capture, timeout, observer)
+#define EVDTEST_POSTEVENT(fmt, ...) evdtest_postevent(fmt, __FILE__, __func__, __LINE__ ,##__VA_ARGS__)
+#define EVDTEST_POSTEVENT_NOBLOCK(fmt, ...) evdtest_postevent_noblock(fmt, __FILE__, __func__, __LINE__,##__VA_ARGS__)
 
 #ifdef __cplusplus
 }

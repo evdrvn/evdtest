@@ -2,7 +2,7 @@ SILENCE = @
 
 #--- Inputs ----#
 COMPONENT_NAME = evdtest
-CPPUTEST_HOME = ./ext/cpputest
+CPPUTEST_HOME = ../ext/evdsptc/test/ext/cpputest
 
 CPPUTEST_USE_EXTENSIONS = Y
 CPPUTEST_USE_MEM_LEAK_DETECTION = Y

@@ -5,7 +5,8 @@ function foo()
     evdtest.waitevent("hello world", false, 10)
 end
 
-evdtest.setdefaulttimeout(0)
+evdtest.setdefaulttimeout(5)
+evdtest.waitevent("hello world", true)
 evdtest.startcoroutine(foo)
-
-evdtest.waitevent("is\\sdone$", false, 0)
+evdtest.setdefaulttimeout(0)
+evdtest.waitevent("is\\sdone$", false)

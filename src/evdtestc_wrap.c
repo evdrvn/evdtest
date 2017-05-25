@@ -2651,23 +2651,26 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_char swig_types[0]
-#define SWIGTYPE_p_evdsptc_context_t swig_types[1]
-#define SWIGTYPE_p_evdsptc_event_t swig_types[2]
-#define SWIGTYPE_p_evdsptc_list_t swig_types[3]
-#define SWIGTYPE_p_evdtest_context_t swig_types[4]
-#define SWIGTYPE_p_evdtest_error_t swig_types[5]
-#define SWIGTYPE_p_evdtest_eventparam_t swig_types[6]
-#define SWIGTYPE_p_evdtest_status_t swig_types[7]
-#define SWIGTYPE_p_lua_State swig_types[8]
-#define SWIGTYPE_p_p_evdsptc_event_t swig_types[9]
-#define SWIGTYPE_p_pthread_mutex_t swig_types[10]
-#define SWIGTYPE_p_pthread_t swig_types[11]
-#define SWIGTYPE_p_regex_t swig_types[12]
-#define SWIGTYPE_p_sem_t swig_types[13]
-#define SWIGTYPE_p_timespec swig_types[14]
-static swig_type_info *swig_types[16];
-static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
+#define SWIGTYPE_p_FILE swig_types[0]
+#define SWIGTYPE_p_char swig_types[1]
+#define SWIGTYPE_p_evdsptc_context_t swig_types[2]
+#define SWIGTYPE_p_evdsptc_event_t swig_types[3]
+#define SWIGTYPE_p_evdsptc_list_t swig_types[4]
+#define SWIGTYPE_p_evdtest_context_t swig_types[5]
+#define SWIGTYPE_p_evdtest_error_t swig_types[6]
+#define SWIGTYPE_p_evdtest_eventparam_t swig_types[7]
+#define SWIGTYPE_p_evdtest_status_t swig_types[8]
+#define SWIGTYPE_p_f_p_char_p_evdsptc_event_t__void swig_types[9]
+#define SWIGTYPE_p_f_void__void swig_types[10]
+#define SWIGTYPE_p_lua_State swig_types[11]
+#define SWIGTYPE_p_p_evdsptc_event_t swig_types[12]
+#define SWIGTYPE_p_pthread_mutex_t swig_types[13]
+#define SWIGTYPE_p_pthread_t swig_types[14]
+#define SWIGTYPE_p_regex_t swig_types[15]
+#define SWIGTYPE_p_sem_t swig_types[16]
+#define SWIGTYPE_p_timespec swig_types[17]
+static swig_type_info *swig_types[19];
+static swig_module_info swig_module = {swig_types, 18, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3685,6 +3688,168 @@ fail:
 }
 
 
+static int _wrap_evdtest_context_t_formatter_set(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_context_t *arg1 = (evdtest_context_t *) 0 ;
+  evdtest_eventformat_t arg2 = (evdtest_eventformat_t) 0 ;
+  
+  SWIG_check_num_args("evdtest_context_t::formatter",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_context_t::formatter",1,"evdtest_context_t *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("evdtest_context_t::formatter",2,"evdtest_eventformat_t");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_context_t,0))){
+    SWIG_fail_ptr("evdtest_context_t_formatter_set",1,SWIGTYPE_p_evdtest_context_t);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_char_p_evdsptc_event_t__void,0))){
+    SWIG_fail_ptr("evdtest_context_t_formatter_set",2,SWIGTYPE_p_f_p_char_p_evdsptc_event_t__void);
+  }
+  
+  if (arg1) (arg1)->formatter = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_context_t_formatter_get(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_context_t *arg1 = (evdtest_context_t *) 0 ;
+  evdtest_eventformat_t result;
+  
+  SWIG_check_num_args("evdtest_context_t::formatter",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_context_t::formatter",1,"evdtest_context_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_context_t,0))){
+    SWIG_fail_ptr("evdtest_context_t_formatter_get",1,SWIGTYPE_p_evdtest_context_t);
+  }
+  
+  result = (evdtest_eventformat_t) ((arg1)->formatter);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_char_p_evdsptc_event_t__void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_context_t_done_file_set(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_context_t *arg1 = (evdtest_context_t *) 0 ;
+  FILE *arg2 = (FILE *) 0 ;
+  
+  SWIG_check_num_args("evdtest_context_t::done_file",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_context_t::done_file",1,"evdtest_context_t *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("evdtest_context_t::done_file",2,"FILE *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_context_t,0))){
+    SWIG_fail_ptr("evdtest_context_t_done_file_set",1,SWIGTYPE_p_evdtest_context_t);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_FILE,SWIG_POINTER_DISOWN))){
+    SWIG_fail_ptr("evdtest_context_t_done_file_set",2,SWIGTYPE_p_FILE);
+  }
+  
+  if (arg1) (arg1)->done_file = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_context_t_done_file_get(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_context_t *arg1 = (evdtest_context_t *) 0 ;
+  FILE *result = 0 ;
+  
+  SWIG_check_num_args("evdtest_context_t::done_file",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_context_t::done_file",1,"evdtest_context_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_context_t,0))){
+    SWIG_fail_ptr("evdtest_context_t_done_file_get",1,SWIGTYPE_p_evdtest_context_t);
+  }
+  
+  result = (FILE *) ((arg1)->done_file);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_FILE,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_context_t_error_callback_set(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_context_t *arg1 = (evdtest_context_t *) 0 ;
+  void (*arg2)(void) = (void (*)(void)) 0 ;
+  
+  SWIG_check_num_args("evdtest_context_t::error_callback",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_context_t::error_callback",1,"evdtest_context_t *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("evdtest_context_t::error_callback",2,"void (*)(void)");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_context_t,0))){
+    SWIG_fail_ptr("evdtest_context_t_error_callback_set",1,SWIGTYPE_p_evdtest_context_t);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_void__void,0))){
+    SWIG_fail_ptr("evdtest_context_t_error_callback_set",2,SWIGTYPE_p_f_void__void);
+  }
+  
+  if (arg1) (arg1)->error_callback = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_context_t_error_callback_get(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_context_t *arg1 = (evdtest_context_t *) 0 ;
+  void (*result)(void) = 0 ;
+  
+  SWIG_check_num_args("evdtest_context_t::error_callback",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_context_t::error_callback",1,"evdtest_context_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_context_t,0))){
+    SWIG_fail_ptr("evdtest_context_t_error_callback_get",1,SWIGTYPE_p_evdtest_context_t);
+  }
+  
+  result = (void (*)(void)) ((arg1)->error_callback);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_void__void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_new_evdtest_context_t(lua_State* L) {
   int SWIG_arg = 0;
   evdtest_context_t *result = 0 ;
@@ -3730,6 +3895,9 @@ static swig_lua_attribute swig_evdtest_context_t_attributes[] = {
     { "first_lua_suspended", _wrap_evdtest_context_t_first_lua_suspended_get, _wrap_evdtest_context_t_first_lua_suspended_set },
     { "sem_lua_suspended", _wrap_evdtest_context_t_sem_lua_suspended_get, _wrap_evdtest_context_t_sem_lua_suspended_set },
     { "timeout", _wrap_evdtest_context_t_timeout_get, _wrap_evdtest_context_t_timeout_set },
+    { "formatter", _wrap_evdtest_context_t_formatter_get, _wrap_evdtest_context_t_formatter_set },
+    { "done_file", _wrap_evdtest_context_t_done_file_get, _wrap_evdtest_context_t_done_file_set },
+    { "error_callback", _wrap_evdtest_context_t_error_callback_get, _wrap_evdtest_context_t_error_callback_set },
     {0,0,0}
 };
 static swig_lua_method swig_evdtest_context_t_methods[]= {
@@ -3939,26 +4107,26 @@ fail:
 }
 
 
-static int _wrap_evdtest_eventparam_t_submitter_set(lua_State* L) {
+static int _wrap_evdtest_eventparam_t_source_file_set(lua_State* L) {
   int SWIG_arg = 0;
   evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
   char *arg2 ;
   
-  SWIG_check_num_args("evdtest_eventparam_t::submitter",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::submitter",1,"evdtest_eventparam_t *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("evdtest_eventparam_t::submitter",2,"char [(128)]");
+  SWIG_check_num_args("evdtest_eventparam_t::source_file",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::source_file",1,"evdtest_eventparam_t *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("evdtest_eventparam_t::source_file",2,"char [(128)]");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
-    SWIG_fail_ptr("evdtest_eventparam_t_submitter_set",1,SWIGTYPE_p_evdtest_eventparam_t);
+    SWIG_fail_ptr("evdtest_eventparam_t_source_file_set",1,SWIGTYPE_p_evdtest_eventparam_t);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
   {
     if(arg2) {
-      strncpy((char*)arg1->submitter, (const char *)arg2, (128)-1);
-      arg1->submitter[(128)-1] = 0;
+      strncpy((char*)arg1->source_file, (const char *)arg2, (128)-1);
+      arg1->source_file[(128)-1] = 0;
     } else {
-      arg1->submitter[0] = 0;
+      arg1->source_file[0] = 0;
     }
   }
   
@@ -3972,20 +4140,127 @@ fail:
 }
 
 
-static int _wrap_evdtest_eventparam_t_submitter_get(lua_State* L) {
+static int _wrap_evdtest_eventparam_t_source_file_get(lua_State* L) {
   int SWIG_arg = 0;
   evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
   char *result = 0 ;
   
-  SWIG_check_num_args("evdtest_eventparam_t::submitter",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::submitter",1,"evdtest_eventparam_t *");
+  SWIG_check_num_args("evdtest_eventparam_t::source_file",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::source_file",1,"evdtest_eventparam_t *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
-    SWIG_fail_ptr("evdtest_eventparam_t_submitter_get",1,SWIGTYPE_p_evdtest_eventparam_t);
+    SWIG_fail_ptr("evdtest_eventparam_t_source_file_get",1,SWIGTYPE_p_evdtest_eventparam_t);
   }
   
-  result = (char *)(char *) ((arg1)->submitter);
+  result = (char *)(char *) ((arg1)->source_file);
   lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_eventparam_t_source_func_set(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
+  char *arg2 ;
+  
+  SWIG_check_num_args("evdtest_eventparam_t::source_func",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::source_func",1,"evdtest_eventparam_t *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("evdtest_eventparam_t::source_func",2,"char [(128)]");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
+    SWIG_fail_ptr("evdtest_eventparam_t_source_func_set",1,SWIGTYPE_p_evdtest_eventparam_t);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if(arg2) {
+      strncpy((char*)arg1->source_func, (const char *)arg2, (128)-1);
+      arg1->source_func[(128)-1] = 0;
+    } else {
+      arg1->source_func[0] = 0;
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_eventparam_t_source_func_get(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("evdtest_eventparam_t::source_func",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::source_func",1,"evdtest_eventparam_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
+    SWIG_fail_ptr("evdtest_eventparam_t_source_func_get",1,SWIGTYPE_p_evdtest_eventparam_t);
+  }
+  
+  result = (char *)(char *) ((arg1)->source_func);
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_eventparam_t_source_line_set(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
+  int arg2 ;
+  
+  SWIG_check_num_args("evdtest_eventparam_t::source_line",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::source_line",1,"evdtest_eventparam_t *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("evdtest_eventparam_t::source_line",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
+    SWIG_fail_ptr("evdtest_eventparam_t_source_line_set",1,SWIGTYPE_p_evdtest_eventparam_t);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->source_line = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_eventparam_t_source_line_get(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("evdtest_eventparam_t::source_line",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::source_line",1,"evdtest_eventparam_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
+    SWIG_fail_ptr("evdtest_eventparam_t_source_line_get",1,SWIGTYPE_p_evdtest_eventparam_t);
+  }
+  
+  result = (int) ((arg1)->source_line);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -4305,7 +4580,9 @@ static swig_lua_attribute swig_evdtest_eventparam_t_attributes[] = {
     { "eventname", _wrap_evdtest_eventparam_t_eventname_get, _wrap_evdtest_eventparam_t_eventname_set },
     { "regex_eventname", _wrap_evdtest_eventparam_t_regex_eventname_get, _wrap_evdtest_eventparam_t_regex_eventname_set },
     { "actual_eventname", _wrap_evdtest_eventparam_t_actual_eventname_get, _wrap_evdtest_eventparam_t_actual_eventname_set },
-    { "submitter", _wrap_evdtest_eventparam_t_submitter_get, _wrap_evdtest_eventparam_t_submitter_set },
+    { "source_file", _wrap_evdtest_eventparam_t_source_file_get, _wrap_evdtest_eventparam_t_source_file_set },
+    { "source_func", _wrap_evdtest_eventparam_t_source_func_get, _wrap_evdtest_eventparam_t_source_func_set },
+    { "source_line", _wrap_evdtest_eventparam_t_source_line_get, _wrap_evdtest_eventparam_t_source_line_set },
     { "thread", _wrap_evdtest_eventparam_t_thread_get, _wrap_evdtest_eventparam_t_thread_set },
     { "timeout", _wrap_evdtest_eventparam_t_timeout_get, _wrap_evdtest_eventparam_t_timeout_set },
     { "observer_count", _wrap_evdtest_eventparam_t_observer_count_get, _wrap_evdtest_eventparam_t_observer_count_set },
@@ -4347,10 +4624,24 @@ static swig_lua_class _wrap_class_evdtest_eventparam_t = { "evdtest_eventparam_t
 
 static int _wrap_evdtest_start(lua_State* L) {
   int SWIG_arg = 0;
+  evdtest_eventformat_t arg1 = (evdtest_eventformat_t) 0 ;
+  void (*arg2)(void) = (void (*)(void)) 0 ;
   evdtest_error_t result;
   
-  SWIG_check_num_args("evdtest_start",0,0)
-  result = (evdtest_error_t)evdtest_start();
+  SWIG_check_num_args("evdtest_start",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_start",1,"evdtest_eventformat_t");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("evdtest_start",2,"void (*)(void)");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_f_p_char_p_evdsptc_event_t__void,0))){
+    SWIG_fail_ptr("evdtest_start",1,SWIGTYPE_p_f_p_char_p_evdsptc_event_t__void);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_void__void,0))){
+    SWIG_fail_ptr("evdtest_start",2,SWIGTYPE_p_f_void__void);
+  }
+  
+  result = (evdtest_error_t)evdtest_start(arg1,arg2);
   {
     lua_pushnumber(L, (int)result);
     SWIG_arg++;
@@ -4389,29 +4680,35 @@ static int _wrap_evdtest_addobserver(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
-  bool arg3 ;
+  char *arg3 = (char *) 0 ;
   int arg4 ;
-  evdsptc_event_t **arg5 = (evdsptc_event_t **) 0 ;
-  evdsptc_event_t *temp5 ;
+  bool arg5 ;
+  int arg6 ;
+  evdsptc_event_t **arg7 = (evdsptc_event_t **) 0 ;
+  evdsptc_event_t *temp7 ;
   evdtest_error_t result;
   
-  temp5 = (evdsptc_event_t *)0;
-  arg5 = &temp5; 
-  SWIG_check_num_args("evdtest_addobserver",4,4)
+  temp7 = (evdsptc_event_t *)0;
+  arg7 = &temp7; 
+  SWIG_check_num_args("evdtest_addobserver",6,6)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("evdtest_addobserver",1,"char const *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("evdtest_addobserver",2,"char const *");
-  if(!lua_isboolean(L,3)) SWIG_fail_arg("evdtest_addobserver",3,"bool");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("evdtest_addobserver",3,"char const *");
   if(!lua_isnumber(L,4)) SWIG_fail_arg("evdtest_addobserver",4,"int");
+  if(!lua_isboolean(L,5)) SWIG_fail_arg("evdtest_addobserver",5,"bool");
+  if(!lua_isnumber(L,6)) SWIG_fail_arg("evdtest_addobserver",6,"int");
   arg1 = (char *)lua_tostring(L, 1);
   arg2 = (char *)lua_tostring(L, 2);
-  arg3 = (lua_toboolean(L, 3)!=0);
+  arg3 = (char *)lua_tostring(L, 3);
   arg4 = (int)lua_tonumber(L, 4);
-  result = (evdtest_error_t)evdtest_addobserver((char const *)arg1,(char const *)arg2,arg3,arg4,arg5);
+  arg5 = (lua_toboolean(L, 5)!=0);
+  arg6 = (int)lua_tonumber(L, 6);
+  result = (evdtest_error_t)evdtest_addobserver((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4,arg5,arg6,arg7);
   {
     lua_pushnumber(L, (int)result);
     SWIG_arg++;
   }
-  SWIG_NewPointerObj(L,*arg5,SWIGTYPE_p_evdsptc_event_t,1); SWIG_arg++; 
+  SWIG_NewPointerObj(L,*arg7,SWIGTYPE_p_evdsptc_event_t,1); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -4425,13 +4722,55 @@ fail:
 static int _wrap_evdtest_postevent(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
-  void *arg2 = 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  int arg4 ;
+  void *arg5 = 0 ;
   evdtest_error_t result;
   
-  SWIG_check_num_args("evdtest_postevent",1,1)
+  SWIG_check_num_args("evdtest_postevent",4,4)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("evdtest_postevent",1,"char const *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("evdtest_postevent",2,"char const *");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("evdtest_postevent",3,"char const *");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("evdtest_postevent",4,"int");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (evdtest_error_t)evdtest_postevent((char const *)arg1,arg2);
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  arg4 = (int)lua_tonumber(L, 4);
+  result = (evdtest_error_t)evdtest_postevent((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4,arg5);
+  {
+    lua_pushnumber(L, (int)result);
+    SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_postevent_noblock(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  int arg4 ;
+  void *arg5 = 0 ;
+  evdtest_error_t result;
+  
+  SWIG_check_num_args("evdtest_postevent_noblock",4,4)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("evdtest_postevent_noblock",1,"char const *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("evdtest_postevent_noblock",2,"char const *");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("evdtest_postevent_noblock",3,"char const *");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("evdtest_postevent_noblock",4,"int");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  arg4 = (int)lua_tonumber(L, 4);
+  result = (evdtest_error_t)evdtest_postevent_noblock((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4,arg5);
   {
     lua_pushnumber(L, (int)result);
     SWIG_arg++;
@@ -4597,17 +4936,68 @@ fail:
 }
 
 
+static int _wrap_evdtest_eventformat_simple(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  evdsptc_event_t *arg2 = (evdsptc_event_t *) 0 ;
+  
+  SWIG_check_num_args("evdtest_eventformat_simple",2,2)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("evdtest_eventformat_simple",1,"char *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("evdtest_eventformat_simple",2,"evdsptc_event_t *");
+  arg1 = (char *)lua_tostring(L, 1);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_evdsptc_event_t,SWIG_POINTER_DISOWN))){
+    SWIG_fail_ptr("evdtest_eventformat_simple",2,SWIGTYPE_p_evdsptc_event_t);
+  }
+  
+  evdtest_eventformat_simple(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_eventformat_with_source(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  evdsptc_event_t *arg2 = (evdsptc_event_t *) 0 ;
+  
+  SWIG_check_num_args("evdtest_eventformat_with_source",2,2)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("evdtest_eventformat_with_source",1,"char *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("evdtest_eventformat_with_source",2,"evdsptc_event_t *");
+  arg1 = (char *)lua_tostring(L, 1);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_evdsptc_event_t,SWIG_POINTER_DISOWN))){
+    SWIG_fail_ptr("evdtest_eventformat_with_source",2,SWIGTYPE_p_evdsptc_event_t);
+  }
+  
+  evdtest_eventformat_with_source(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
 static swig_lua_const_info swig_SwigModule_constants[]= {
-    {SWIG_LUA_CONSTTAB_STRING("EVDTEST_TEST_CASE", "EVDTEST_TEST_CASE")},
-    {SWIG_LUA_CONSTTAB_STRING("EVDTEST_TEST_DONE", "EVDTEST_TEST_DONE")},
+    {SWIG_LUA_CONSTTAB_STRING("EVDTEST_ENV_TEST_CASE", "EVDTEST_TEST_CASE")},
+    {SWIG_LUA_CONSTTAB_STRING("EVDTEST_DONE_FILE", "evdtest_done.txt")},
     {SWIG_LUA_CONSTTAB_STRING("EVDTEST_SYSTEM_EVENT_HEADER", "[EVDTEST] ")},
     {SWIG_LUA_CONSTTAB_STRING("EVDTEST_LUA_EVENT_HEADER", "[EVDTLUA] ")},
     {SWIG_LUA_CONSTTAB_STRING("EVDTEST_ERROR_EVENT_HEADER", "[EVDTERR] ")},
+    {SWIG_LUA_CONSTTAB_INT("EVDTEST_BUFFFER_LENGTH", (1024))},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_EVENT_LENGTH", (512))},
-    {SWIG_LUA_CONSTTAB_INT("EVDTEST_FUNC_LENGTH", (128))},
+    {SWIG_LUA_CONSTTAB_INT("EVDTEST_SOURCE_LENGTH", (128))},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_NONE", EVDTEST_ERROR_NONE)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_EVDSPTC_FAIL_CREATE", EVDTEST_ERROR_EVDSPTC_FAIL_CREATE)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_FAIL_CREATE_THREAD", EVDTEST_ERROR_FAIL_CREATE_THREAD)},
@@ -4622,6 +5012,7 @@ static swig_lua_const_info swig_SwigModule_constants[]= {
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_CANCELED", EVDTEST_ERROR_CANCELED)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_NOT_DONE", EVDTEST_ERROR_NOT_DONE)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_EVDSPTC_FAIL_WAIT", EVDTEST_ERROR_EVDSPTC_FAIL_WAIT)},
+    {SWIG_LUA_CONSTTAB_INT("EVDTEST_ERROR_COULD_NOT_OPEN_DONEFILE", EVDTEST_ERROR_COULD_NOT_OPEN_DONEFILE)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_STATUS_ERROR_EVDSPTC_CREATE", EVDTEST_STATUS_ERROR_EVDSPTC_CREATE)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_STATUS_ERROR_LUA_LOAD_FILE", EVDTEST_STATUS_ERROR_LUA_LOAD_FILE)},
     {SWIG_LUA_CONSTTAB_INT("EVDTEST_STATUS_ERROR_LUA_THREAD_CREATE", EVDTEST_STATUS_ERROR_LUA_THREAD_CREATE)},
@@ -4635,6 +5026,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "evdtest_join", _wrap_evdtest_join},
     { "evdtest_addobserver", _wrap_evdtest_addobserver},
     { "evdtest_postevent", _wrap_evdtest_postevent},
+    { "evdtest_postevent_noblock", _wrap_evdtest_postevent_noblock},
     { "evdtest_wait", _wrap_evdtest_wait},
     { "evdtest_observer_geteventname", _wrap_evdtest_observer_geteventname},
     { "evdtest_observer_destroy", _wrap_evdtest_observer_destroy},
@@ -4642,6 +5034,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "evdtest_observer_trywait", _wrap_evdtest_observer_trywait},
     { "evdtest_setdefaulttimeout", _wrap_evdtest_setdefaulttimeout},
     { "evdtest_observer_releaseevent", _wrap_evdtest_observer_releaseevent},
+    { "evdtest_eventformat_simple", _wrap_evdtest_eventformat_simple},
+    { "evdtest_eventformat_with_source", _wrap_evdtest_eventformat_with_source},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
@@ -4667,6 +5061,7 @@ static swig_lua_namespace swig_SwigModule = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_FILE = {"_p_FILE", "FILE *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_evdsptc_context_t = {"_p_evdsptc_context_t", "evdsptc_context_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_evdsptc_event_t = {"_p_evdsptc_event_t", "evdsptc_event_t *", 0, 0, (void*)0, 0};
@@ -4675,6 +5070,8 @@ static swig_type_info _swigt__p_evdtest_context_t = {"_p_evdtest_context_t", "ev
 static swig_type_info _swigt__p_evdtest_error_t = {"_p_evdtest_error_t", "enum evdtest_error_t *|evdtest_error_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_evdtest_eventparam_t = {"_p_evdtest_eventparam_t", "evdtest_eventparam_t *", 0, 0, (void*)&_wrap_class_evdtest_eventparam_t, 0};
 static swig_type_info _swigt__p_evdtest_status_t = {"_p_evdtest_status_t", "enum evdtest_status_t *|evdtest_status_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_char_p_evdsptc_event_t__void = {"_p_f_p_char_p_evdsptc_event_t__void", "evdtest_eventformat_t|void (*)(char *,evdsptc_event_t *)", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_void__void = {"_p_f_void__void", "void (*)(void)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_lua_State = {"_p_lua_State", "lua_State *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_evdsptc_event_t = {"_p_p_evdsptc_event_t", "evdsptc_event_t **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_pthread_mutex_t = {"_p_pthread_mutex_t", "pthread_mutex_t *", 0, 0, (void*)0, 0};
@@ -4684,6 +5081,7 @@ static swig_type_info _swigt__p_sem_t = {"_p_sem_t", "sem_t *", 0, 0, (void*)0, 
 static swig_type_info _swigt__p_timespec = {"_p_timespec", "struct timespec *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_FILE,
   &_swigt__p_char,
   &_swigt__p_evdsptc_context_t,
   &_swigt__p_evdsptc_event_t,
@@ -4692,6 +5090,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_evdtest_error_t,
   &_swigt__p_evdtest_eventparam_t,
   &_swigt__p_evdtest_status_t,
+  &_swigt__p_f_p_char_p_evdsptc_event_t__void,
+  &_swigt__p_f_void__void,
   &_swigt__p_lua_State,
   &_swigt__p_p_evdsptc_event_t,
   &_swigt__p_pthread_mutex_t,
@@ -4701,6 +5101,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_timespec,
 };
 
+static swig_cast_info _swigc__p_FILE[] = {  {&_swigt__p_FILE, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_evdsptc_context_t[] = {  {&_swigt__p_evdsptc_context_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_evdsptc_event_t[] = {  {&_swigt__p_evdsptc_event_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -4709,6 +5110,8 @@ static swig_cast_info _swigc__p_evdtest_context_t[] = {  {&_swigt__p_evdtest_con
 static swig_cast_info _swigc__p_evdtest_error_t[] = {  {&_swigt__p_evdtest_error_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_evdtest_eventparam_t[] = {  {&_swigt__p_evdtest_eventparam_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_evdtest_status_t[] = {  {&_swigt__p_evdtest_status_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_char_p_evdsptc_event_t__void[] = {  {&_swigt__p_f_p_char_p_evdsptc_event_t__void, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_void__void[] = {  {&_swigt__p_f_void__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_lua_State[] = {  {&_swigt__p_lua_State, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_evdsptc_event_t[] = {  {&_swigt__p_p_evdsptc_event_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_pthread_mutex_t[] = {  {&_swigt__p_pthread_mutex_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -4718,6 +5121,7 @@ static swig_cast_info _swigc__p_sem_t[] = {  {&_swigt__p_sem_t, 0, 0, 0},{0, 0, 
 static swig_cast_info _swigc__p_timespec[] = {  {&_swigt__p_timespec, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_FILE,
   _swigc__p_char,
   _swigc__p_evdsptc_context_t,
   _swigc__p_evdsptc_event_t,
@@ -4726,6 +5130,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_evdtest_error_t,
   _swigc__p_evdtest_eventparam_t,
   _swigc__p_evdtest_status_t,
+  _swigc__p_f_p_char_p_evdsptc_event_t__void,
+  _swigc__p_f_void__void,
   _swigc__p_lua_State,
   _swigc__p_p_evdsptc_event_t,
   _swigc__p_pthread_mutex_t,

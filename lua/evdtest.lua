@@ -4,17 +4,45 @@ evdtest.observers = {}
 function __evdtest_checkdone()
     for key, value in pairs(evdtest.observers) do
         if value.state == "wait" then
-            evdtest.assert(value.ignore_cancel == true, "observer '"..value.eventname.."' has been canceled at "..value.submitter, true) 
+            evdtest.assert(value.ignore_cancel == true, "observer '"..value.eventname.."' has been canceled at "..value.source, true) 
         end
     end
 end
 
-evdtest.setdefaulttimeout = function(timeout)
-    evdtestc.setdefaulttimeout(timeout)
+local function split_source(source) 
+    local file = ""
+    local func = "" 
+    local line = 0
+    local i, j, k
+    j = 0
+    for i in string.gmatch(source, "[^:]+") do
+        if j == 0 then file = i 
+            for k in string.gmatch(i, "[^/]+") do
+                file = k
+            end
+        end
+        if j == 1 then line = tonumber(i) end
+        if j > 1 then  
+            func = func..":"..i
+        end
+        j = j + 1 
+    end
+    func = string.match(func, "%sin%s(.+)") do
+    end
+    return file, func, line
+end
+
+evdtest.setdefaulttimeout = function (timeout)
+    evdtestc.evdtest_setdefaulttimeout(timeout)
 end
 
 evdtest.postevent = function (eventname)
-    evdtestc.evdtest_postevent(eventname)
+    local thread, ismainthread = coroutine.running()
+    local callstack = debug.traceback(thread, "", 2)
+    local i, j = string.find(callstack, "\t")
+    local source = string.sub(callstack, i + 1)
+    local file, func, line = split_source(source) 
+    evdtestc.evdtest_postevent(eventname, file, func, line)
 end
 
 evdtest.assert = function (v, message, without_traceback)
@@ -43,12 +71,14 @@ end
 evdtest.__waitevent = function (eventname, capture, ignore_cancel, timeout)
     local capture = capture or false 
     local ignore_cancel = ignore_cancel or false 
-    local timeout = timeout or -1
+    local timeout = timeout
+    if timeout == nil then timeout = -1 end
     local thread, ismainthread = coroutine.running()
     local callstack = debug.traceback(thread, "", 2)
     local i, j = string.find(callstack, "\t")
-    local submitter = string.sub(callstack, i + 1)
-    local ret, observer = evdtestc.evdtest_addobserver(eventname, submitter, capture, timeout)
+    local source = string.sub(callstack, i + 1)
+    local file, func, line = split_source(source) 
+    local ret, observer = evdtestc.evdtest_addobserver(eventname, file, func, line, capture, timeout)
     evdtest.assert(ret ~= evdtestc.EVDTEST_ERROR_COMP_REGEX, "fail to compile regex pattern '"..ret.."'")
     evdtest.assert(ret == evdtestc.EVDTEST_ERROR_NONE, "fail to addobserver, ret = "..ret)
 
@@ -57,7 +87,7 @@ evdtest.__waitevent = function (eventname, capture, ignore_cancel, timeout)
     tbl.state = "wait" 
     tbl.thread = thread
     tbl.ismainthread = ismainthread
-    tbl.submitter = submitter
+    tbl.source = source
     tbl.eventname = eventname 
     tbl.ignore_cancel = ignore_cancel 
     table.insert(evdtest.observers, tbl)
@@ -78,9 +108,9 @@ evdtest.__waitevent = function (eventname, capture, ignore_cancel, timeout)
             evdtest.assert(ret ~= evdtestc.EVDTEST_ERROR_CANCELED, "observer '"..eventname.."' has been canceled !!")    
             evdtest.assert(ret ~= evdtestc.EVDTEST_ERROR_TIMEOUT, "observer '"..eventname.."' timeout !!")    
         end
-
         if capture == false and (ret == evdtestc.EVDTEST_ERROR_CANCELED or ret == evdtestc.EVDTEST_ERROR_TIMEOUT) then 
             ret = evdtestc.EVDTEST_ERROR_NONE 
+            tbl.state = "done"
             return nil
         end
 
