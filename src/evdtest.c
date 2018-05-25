@@ -200,7 +200,7 @@ static bool evdtest_eventhandler(evdsptc_event_t* event){
     TRACE("event %p '%s' handling...", (void*)(event), eventname);
     if(eventparam->observer_count < 0) eventparam->observer_count = EVDTEST_EVENT_TO_BE_DESTROYED;
 
-    if(context.state != EVDTEST_STATUS_RUNNING || evdsptc_list_is_empty(&context.observers)) goto DONE;
+    if(context.state != EVDTEST_STATUS_RUNNING || evdsptc_list_isempty(&context.observers)) goto DONE;
     
     iterator = evdsptc_list_iterator(&context.observers);
     while(evdsptc_listelem_hasnext(iterator)){
@@ -229,7 +229,7 @@ static bool evdtest_eventhandler(evdsptc_event_t* event){
             }else{
                 evdtest_postevent_nop("observer %p '%s' caught event %p", (void*)observer, target_eventname, (void*)event);
             }
-            evdsptc_event_done(observer);
+            evdsptc_event_makedone(observer);
             iterator = &copied;
             TRACE("removed !!!");
         }
@@ -341,6 +341,7 @@ static evdtest_error_t evdtest_postevent_impl(const char* eventname, const char*
 
     if(evdsptc_post(&context.evdsptc_ctx, pevent) != EVDSPTC_ERROR_NONE){
         ret = EVDTEST_ERROR_EVDSPTC_FAIL_POST;
+        evdtest_event_free(pevent);
         goto DONE;
     }
 
@@ -594,7 +595,7 @@ evdtest_error_t evdtest_wait(bool finalize){
         }else if(eventparam->observer_count == 0){
             TRACE("suspended event %p done, is_lua = %d", (void*)event, evdtest_thread_is_lua(eventparam->thread));
             if(!evdtest_thread_is_lua(eventparam->thread)){
-                evdsptc_event_done(event);
+                evdsptc_event_makedone(event);
             }else{
                 eventparam->observer_count = EVDTEST_EVENT_TO_BE_DESTROYED;
             }
