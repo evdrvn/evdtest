@@ -341,6 +341,7 @@ static evdtest_error_t evdtest_postevent_impl(const char* eventname, const char*
 
     if(evdsptc_post(&context.evdsptc_ctx, pevent) != EVDSPTC_ERROR_NONE){
         ret = EVDTEST_ERROR_EVDSPTC_FAIL_POST;
+        evdtest_event_free(pevent);
         goto DONE;
     }
 

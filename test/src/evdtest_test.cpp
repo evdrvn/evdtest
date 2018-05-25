@@ -102,12 +102,33 @@ TEST(evdtest_test_group, start_error_runtime_lua_script_test){
     check_test_done(false);
 }
 
+static volatile bool done = false;
+static bool handle_timer(evdsptc_event_t* event){
+    (void) event;
+    EVDTEST_POSTEVENT("hello world");
+    return done;
+}
+
 TEST(evdtest_test_group, start_and_join_test){
     evdtest_error_t ret_start = EVDTEST_ERROR_NONE;
     evdtest_error_t ret_stop  = EVDTEST_ERROR_NONE;
 
     setenv(EVDTEST_ENV_TEST_CASE, "lua/test_normal.lua", 1);
 
+    evdsptc_context_t ctx;
+    evdsptc_event_t ev;
+    struct timespec interval = { interval.tv_sec = 0, interval.tv_nsec = 1 * 1000 * 1000};
+     
+    evdsptc_create_periodic(&ctx, NULL, NULL, NULL, &interval);
+    evdsptc_event_init(&ev, handle_timer, NULL, false, NULL);
+    ret_start = evdtest_start(NULL, NULL);
+   
+    evdsptc_post(&ctx, &ev);
+    ret_stop  = evdtest_join();
+    
+    done = true;
+    evdsptc_event_waitdone(&ev);
+ 
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
@@ -192,16 +213,17 @@ TEST(evdtest_test_group, ignore_cancel_test){
     check_test_done(true);
 }
 
+
 TEST(evdtest_test_group, residue_test){
     evdtest_error_t ret_start = EVDTEST_ERROR_NONE;
     evdtest_error_t ret_stop  = EVDTEST_ERROR_NONE;
 
     setenv(EVDTEST_ENV_TEST_CASE, "lua/test_residue.lua", 1);
-
+    
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
-    
+
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_ANY_LUA_EXCEPTIONS, ret_stop);
     check_test_done(false);
