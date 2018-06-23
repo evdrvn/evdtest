@@ -66,6 +66,7 @@ int main(int ac, char** av){
 
 #ifdef TEST_MINIMAL
     evdtest_join();
+    evdtest_destroy();
 #endif
 
     return 0;

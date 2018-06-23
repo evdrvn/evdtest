@@ -38,7 +38,7 @@ $(SWIG_OUTPUT): $(SWIG_FILES)
 	gcc -I../src -I../ext/evdsptc/src -I../ext/lua-5.2.4/src -I$(SWIG_DIR)/Source/Swig -c $(SWIG_FILES_PREFIX)_wrap.c -o $(SWIG_OUTPUT)
 
 CPPUTEST_CXXFLAGS+= -std=gnu++0x
-CPPUTEST_CFLAGS  += -std=gnu99 -DEVDTRACE
+CPPUTEST_CFLAGS  += -std=gnu99 -DEVDTESTRACE
 CPPUTEST_LDFLAGS += -L../ext/evdsptc/test/lib -L../ext/lua-5.2.4/src -lpthread -lrt -levdsptc -llua -lm -ldl
 CPPUTEST_PEDANTIC_ERRORS = N
 

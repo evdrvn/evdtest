@@ -4676,6 +4676,26 @@ fail:
 }
 
 
+static int _wrap_evdtest_destroy(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_error_t result;
+  
+  SWIG_check_num_args("evdtest_destroy",0,0)
+  result = (evdtest_error_t)evdtest_destroy();
+  {
+    lua_pushnumber(L, (int)result);
+    SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_evdtest_addobserver(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -5024,6 +5044,7 @@ static swig_lua_const_info swig_SwigModule_constants[]= {
 static swig_lua_method swig_SwigModule_methods[]= {
     { "evdtest_start", _wrap_evdtest_start},
     { "evdtest_join", _wrap_evdtest_join},
+    { "evdtest_destroy", _wrap_evdtest_destroy},
     { "evdtest_addobserver", _wrap_evdtest_addobserver},
     { "evdtest_postevent", _wrap_evdtest_postevent},
     { "evdtest_postevent_noblock", _wrap_evdtest_postevent_noblock},

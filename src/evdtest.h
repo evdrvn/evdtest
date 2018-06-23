@@ -14,10 +14,11 @@ extern "C" {
 #include <regex.h>
 #include <time.h>
 
-#ifdef EVDTRACE
-#define TRACE(fmt, ...) printf("##TRACE## %p: " fmt "\n", (void*)pthread_self(), ##__VA_ARGS__); fflush(stdout)
+//#define EVDTESTRACE
+#ifdef EVDTESTRACE
+#define EVDTEST_TRACE(fmt, ...) printf("##TRACE## %p:%s(): " fmt "\n", (void*)pthread_self(), __func__, ##__VA_ARGS__); fflush(stdout)
 #else
-#define TRACE(fmt, ...) (void)sizeof(printf(fmt,##__VA_ARGS__))
+#define EVDTEST_TRACE(fmt, ...) (void)sizeof(printf(fmt,##__VA_ARGS__))
 #endif
 
 #define EVDTEST_ENV_TEST_CASE "EVDTEST_TEST_CASE"
@@ -97,6 +98,7 @@ typedef struct {
 
 extern evdtest_error_t evdtest_start(evdtest_eventformat_t formatter, void (*error_callback)(void));
 extern evdtest_error_t evdtest_join(void);
+extern evdtest_error_t evdtest_destroy(void);
 extern evdtest_error_t evdtest_addobserver(const char* eventname, const char* file, const char* func, int line, bool capture, int timeout, evdsptc_event_t** event);
 extern evdtest_error_t evdtest_postevent(const char* format, const char* file, const char* func, int line, ...);
 extern evdtest_error_t evdtest_postevent_noblock(const char* format, const char* file, const char* func, int line, ...);

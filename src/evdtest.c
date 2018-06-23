@@ -118,7 +118,7 @@ static void* evdtest_thread_lua(void* arg){
         evdtest_wait(true);
     }
     context.first_lua_suspended = true;
-    TRACE("lua thread done, ret = %d", ret);
+    EVDTEST_TRACE("lua thread done, ret = %d", ret);
     __sync_synchronize();
 
     if(ret != EVDTEST_ERROR_NONE && context.error_callback) context.error_callback();
@@ -131,10 +131,10 @@ static void evdtest_event_free(evdsptc_event_t* event){
     eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(event);
 
     if(event->handler == evdtest_event_addobserver){
-        TRACE("observer %p has been freeing...", (void*)event);
+        EVDTEST_TRACE("observer %p has been freeing...", (void*)event);
         regfree(&eventparam->regex_eventname);
     }else{
-        TRACE("event %p has been freeing...", (void*)event);
+        EVDTEST_TRACE("event %p has been freeing...", (void*)event);
     }
     free(eventparam);
     free(event);
@@ -153,7 +153,7 @@ static void evdtest_event_trash_impl(evdsptc_event_t* event){
     evdsptc_listelem_setdestructor(listelem, evdtest_event_listelem_free);
     evdsptc_list_push(&context.observers_bin, &event->listelem);
 
-    TRACE("evdtest_event %p trashed.", (void*)event);
+    EVDTEST_TRACE("evdtest_event %p trashed.", (void*)event);
 }
 
 static void evdtest_event_trash(evdsptc_event_t* event){
@@ -172,11 +172,11 @@ static bool evdtest_event_addobserver(evdsptc_event_t* observer){
     evdsptc_listelem_setdestructor(listelem, evdtest_event_listelem_free);
     if(context.state == EVDTEST_STATUS_RUNNING){
         evdsptc_list_push(&context.observers, &observer->listelem);
-        TRACE("observer %p '%s' added, capture = %d", (void*)(observer), observerparam->eventname, observerparam->capture);
+        EVDTEST_TRACE("observer %p '%s' added, capture = %d", (void*)(observer), observerparam->eventname, observerparam->capture);
     }else{
         observer->auto_destruct = false;
         evdsptc_event_cancel(observer);
-        TRACE("observer %p canceled", (void*)(observer));
+        EVDTEST_TRACE("observer %p canceled", (void*)(observer));
         evdtest_event_trash_impl(observer);
     }
     pthread_mutex_unlock(&context.mutex);
@@ -197,7 +197,7 @@ static bool evdtest_eventhandler(evdsptc_event_t* event){
     pthread_mutex_lock(&context.mutex);
     eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(event);
     eventname = eventparam->eventname;
-    TRACE("event %p '%s' handling...", (void*)(event), eventname);
+    EVDTEST_TRACE("event %p '%s' handling...", (void*)(event), eventname);
     if(eventparam->observer_count < 0) eventparam->observer_count = EVDTEST_EVENT_TO_BE_DESTROYED;
 
     if(context.state != EVDTEST_STATUS_RUNNING || evdsptc_list_isempty(&context.observers)) goto DONE;
@@ -208,7 +208,7 @@ static bool evdtest_eventhandler(evdsptc_event_t* event){
         copied = *iterator;
 
         observer = (evdsptc_event_t*)iterator;
-        TRACE("observer %p is checking event %p ... ", (void*)observer, (void*)event);
+        EVDTEST_TRACE("observer %p is checking event %p ... ", (void*)observer, (void*)event);
         observerparam = (evdtest_eventparam_t*)evdsptc_event_getparam(observer);
         target_eventname = observerparam->eventname;
         assert(&observerparam->regex_eventname);
@@ -231,14 +231,14 @@ static bool evdtest_eventhandler(evdsptc_event_t* event){
             }
             evdsptc_event_makedone(observer);
             iterator = &copied;
-            TRACE("removed !!!");
+            EVDTEST_TRACE("removed !!!");
         }
     }
     if(!done) sem_post(&context.sem_lua_suspended);
 
 DONE:
     pthread_mutex_unlock(&context.mutex);
-    TRACE("event %p handled, done = %d, observer_count = %d", (void*)event, done, eventparam->observer_count);
+    EVDTEST_TRACE("event %p handled, done = %d, observer_count = %d", (void*)event, done, eventparam->observer_count);
     return done;
 }
 
@@ -308,6 +308,7 @@ static evdtest_error_t evdtest_event_init(
     eventparam->observer_count = EVDTEST_EVENT_NOT_YET_HANDLING;
 
     evdsptc_event_init(*event, eventhandler, (void*)eventparam, auto_destruct, event_destructor);
+    EVDTEST_TRACE("event %p has been initialized.", *event);
 
 DONE:
     return ret;
@@ -341,6 +342,7 @@ static evdtest_error_t evdtest_postevent_impl(const char* eventname, const char*
 
     if(evdsptc_post(&context.evdsptc_ctx, pevent) != EVDSPTC_ERROR_NONE){
         ret = EVDTEST_ERROR_EVDSPTC_FAIL_POST;
+        EVDTEST_TRACE("event %p has been failed to post.", pevent);
         evdtest_event_free(pevent);
         goto DONE;
     }
@@ -349,7 +351,7 @@ DONE:
     if(lock) pthread_mutex_unlock(&context.mutex);
 
     if((ret == EVDTEST_ERROR_NONE) && waitdone){
-        TRACE("event %p has been waiting...", (void*)pevent);
+        EVDTEST_TRACE("event %p has been waiting...", (void*)pevent);
         err = evdsptc_event_waitdone(pevent); 
         if(EVDSPTC_ERROR_CANCELED == err){
             ret = EVDTEST_ERROR_CANCELED;
@@ -358,7 +360,7 @@ DONE:
         }
 
         if(lock) pthread_mutex_lock(&context.mutex);
-        TRACE("event %p has done, observer_count = %d, err = %d, ret = %d", (void*)pevent, eventparam->observer_count, err, ret);
+        EVDTEST_TRACE("event %p has done, observer_count = %d, err = %d, ret = %d", (void*)pevent, eventparam->observer_count, err, ret);
         if(eventparam->observer_count == 0) eventparam->observer_count = EVDTEST_EVENT_TO_BE_DESTROYED;
         else if(eventparam->observer_count == EVDTEST_EVENT_TO_BE_DESTROYED) evdsptc_event_destroy(pevent);
         if(lock) pthread_mutex_unlock(&context.mutex);
@@ -419,7 +421,7 @@ evdtest_error_t evdtest_addobserver(const char* eventname, const char* file, con
     }
 
     *event = pevent;
-    TRACE("addobserver event %p posted. timeout = %d, capture = %d", (void*)(*event), timeout, capture);
+    EVDTEST_TRACE("addobserver event %p posted. timeout = %d, capture = %d", (void*)(*event), timeout, capture);
 
 DONE:
     pthread_mutex_unlock(&context.mutex);
@@ -505,7 +507,7 @@ evdtest_error_t evdtest_join(void){
     bool wait_destroyed = false;
     bool require_join_lua = false;
     
-    TRACE("evdtest join start, join_result = %d", context.join_result);
+    EVDTEST_TRACE("evdtest join start, join_result = %d", context.join_result);
 
     pthread_mutex_lock(&context.mutex);
     if(!context.join_kicked) {
@@ -522,10 +524,10 @@ evdtest_error_t evdtest_join(void){
         goto DONE;
     }else{
         if(require_join_lua){
-            TRACE("lua joining...");
+            EVDTEST_TRACE("lua joining...");
             pthread_join(context.lua_thread, &arg);
             context.join_result = (evdtest_error_t)arg;
-            TRACE("lua joined, join_result = %d", context.join_result);
+            EVDTEST_TRACE("lua joined, join_result = %d", context.join_result);
             if(context.join_result == EVDTEST_ERROR_NONE){
                 fputs(getenv(EVDTEST_ENV_TEST_CASE), context.done_file); 
                 fputs("\n", context.done_file); 
@@ -536,28 +538,36 @@ evdtest_error_t evdtest_join(void){
 
         context.state = EVDTEST_STATUS_DESTROYING;
         __sync_synchronize();
-        TRACE("destroying evdsptc...");
-        evdsptc_destory(&context.evdsptc_ctx, true);
+        EVDTEST_TRACE("cenceling evdsptc...");
+        evdsptc_cancel(&context.evdsptc_ctx);
 
-        TRACE("closing lua state...");
+        EVDTEST_TRACE("closing lua state...");
         lua_close(context.L);
         
         while(EVDTEST_ERROR_NOT_DONE == evdtest_wait(true)) usleep(EVDTEST_USLEEP_INTERVAL);
 
-        TRACE("deleting suspendend events...");
-        evdsptc_list_destroy(&context.suspended_events);
-        TRACE("deleting observers...");
-        evdsptc_list_destroy(&context.observers);
-        TRACE("deleting trashed observers...");
-        evdsptc_list_destroy(&context.observers_bin);
-        
-        __sync_synchronize();
-        context.state = EVDTEST_STATUS_DESTROYED;
     }
 
 DONE:
-    TRACE("evdtest joined, join_result = %d", context.join_result);
+    EVDTEST_TRACE("evdtest joined, join_result = %d", context.join_result);
     return context.join_result;
+}
+
+evdtest_error_t evdtest_destroy(void){
+    evdtest_error_t ret = EVDTEST_ERROR_NONE;
+    EVDTEST_TRACE("destroying evdsptc...");
+    evdsptc_destroy(&context.evdsptc_ctx, true);
+
+    EVDTEST_TRACE("deleting suspendend events...");
+    evdsptc_list_destroy(&context.suspended_events);
+    EVDTEST_TRACE("deleting observers...");
+    evdsptc_list_destroy(&context.observers);
+    EVDTEST_TRACE("deleting trashed observers...");
+    evdsptc_list_destroy(&context.observers_bin);
+
+    __sync_synchronize();
+    context.state = EVDTEST_STATUS_DESTROYED;
+    return ret;
 }
 
 evdtest_error_t evdtest_wait(bool finalize){
@@ -574,33 +584,33 @@ evdtest_error_t evdtest_wait(bool finalize){
 
     pthread_mutex_lock(&context.mutex);
     if(context.state >= EVDTEST_STATUS_DESTROYING) finalize = true;
-    TRACE("evdtest wait started, finalize = %d", finalize);
+    EVDTEST_TRACE("evdtest wait started, finalize = %d", finalize);
     context.first_lua_suspended = true;
 
     iterator = evdsptc_list_iterator(&context.suspended_events);
     while(evdsptc_listelem_hasnext(iterator)){
         count++;
         iterator = evdsptc_listelem_next(iterator);
-        TRACE("suspended event %p checking...", (void*)iterator);
+        EVDTEST_TRACE("suspended event %p checking...", (void*)iterator);
         copied = *iterator;
         event = (evdsptc_event_t*)iterator;
         eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(event);
 
         if(eventparam->observer_count < 0){
-            TRACE("suspended event %p have been destroying...", (void*)event);
+            EVDTEST_TRACE("suspended event %p have been destroying...", (void*)event);
             evdsptc_listelem_remove(iterator);
             evdsptc_event_destroy(event);
             iterator = &copied;
             count--;
         }else if(eventparam->observer_count == 0){
-            TRACE("suspended event %p done, is_lua = %d", (void*)event, evdtest_thread_is_lua(eventparam->thread));
+            EVDTEST_TRACE("suspended event %p done, is_lua = %d", (void*)event, evdtest_thread_is_lua(eventparam->thread));
             if(!evdtest_thread_is_lua(eventparam->thread)){
                 evdsptc_event_makedone(event);
             }else{
                 eventparam->observer_count = EVDTEST_EVENT_TO_BE_DESTROYED;
             }
         }else if(finalize){
-            TRACE("suspended event %p have been canceling...", (void*)event);
+            EVDTEST_TRACE("suspended event %p have been canceling...", (void*)event);
             evdsptc_event_cancel(event);
             eventparam->observer_count = 0;
             if(evdtest_thread_is_lua(eventparam->thread)){
@@ -626,10 +636,10 @@ evdtest_error_t evdtest_wait(bool finalize){
     pthread_mutex_unlock(&context.mutex);
 
     if(!finalize){
-        TRACE("evdtest waiting..., now = %d, until = %d", (int)now.tv_sec, (int)timeout.tv_sec);
+        EVDTEST_TRACE("evdtest waiting..., now = %d, until = %d", (int)now.tv_sec, (int)timeout.tv_sec);
         while(-1 == sem_timedwait(&context.sem_lua_suspended, &timeout) && errno == EINTR) continue;
         clock_gettime(CLOCK_REALTIME, &now);
-        TRACE("evdtest resumed!!!, now = %d", (int)now.tv_sec);
+        EVDTEST_TRACE("evdtest resumed!!!, now = %d", (int)now.tv_sec);
     }else{
 
     }
@@ -648,7 +658,7 @@ void evdtest_observer_destroy(evdsptc_event_t* observer){
     removed = evdsptc_listelem_remove((evdsptc_listelem_t*)observer);
     pthread_mutex_unlock(&context.mutex);
     
-    TRACE("observer %p has been destroying....", (void*)observer);
+    EVDTEST_TRACE("observer %p has been destroying....", (void*)observer);
     
     if(removed->destructor != NULL) removed->destructor(removed);
 }
@@ -670,12 +680,12 @@ void evdtest_abort(void){
         observer = (evdsptc_event_t*)evdsptc_listelem_remove(iterator);
         observer->auto_destruct = false;
         evdsptc_event_cancel(observer);
-        TRACE("observer %p canceled", (void*)(observer));
+        EVDTEST_TRACE("observer %p canceled", (void*)(observer));
         evdtest_event_trash_impl(observer);
         iterator = &copied;
     }
     pthread_mutex_unlock(&context.mutex);
-    TRACE("abort sem posted...");
+    EVDTEST_TRACE("abort sem posted...");
     sem_post(&context.sem_lua_suspended);
 }
 
@@ -692,7 +702,7 @@ evdtest_error_t evdtest_observer_trywait(evdsptc_event_t* observer){
     bool resume = false;
 
     err = evdsptc_event_trywaitdone(observer);
-    TRACE("observer %p trywaitdone, err = %d", (void*)observer, err);
+    EVDTEST_TRACE("observer %p trywaitdone, err = %d", (void*)observer, err);
     observerparam = (evdtest_eventparam_t*)evdsptc_event_getparam(observer);
     if(EVDSPTC_ERROR_NOT_DONE == err){
         if(observerparam->capture) ret = EVDTEST_ERROR_NOT_DONE;
@@ -710,7 +720,7 @@ evdtest_error_t evdtest_observer_trywait(evdsptc_event_t* observer){
                     if(observer == (evdsptc_event_t*)iterator){
                         evdsptc_listelem_remove(iterator);
                         observer->auto_destruct = false;
-                        TRACE("observer %p canceled due to timeout", (void*)(observer));
+                        EVDTEST_TRACE("observer %p canceled due to timeout", (void*)(observer));
                         evdsptc_event_cancel(observer);
                         evdsptc_list_push(&context.observers_bin, iterator);
                         iterator = &copied;
@@ -737,7 +747,7 @@ evdtest_error_t evdtest_observer_trywait(evdsptc_event_t* observer){
         if(observerparam->capture == false && observerparam->caught){
             eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(observerparam->caught);
             eventparam->observer_count--;
-            TRACE("observer %p trywaitdone event %p observer_count = %d, err = %d, ret = %d", (void*)observer, (void*)observerparam->caught, eventparam->observer_count, err, ret);
+            EVDTEST_TRACE("observer %p trywaitdone event %p observer_count = %d, err = %d, ret = %d", (void*)observer, (void*)observerparam->caught, eventparam->observer_count, err, ret);
         }
         pthread_mutex_unlock(&context.mutex);
     }
@@ -761,12 +771,12 @@ void evdtest_observer_releaseevent(evdsptc_event_t* observer){
     event = observerparam->caught;
     eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(event);
     eventparam->observer_count--;
-    TRACE("observer %p releasing event %p, observer_count = %d", (void*)observer, (void*)event, eventparam->observer_count);
+    EVDTEST_TRACE("observer %p releasing event %p, observer_count = %d", (void*)observer, (void*)event, eventparam->observer_count);
 
     if(eventparam->observer_count == 0){
         observerparam->caught->auto_destruct = false;
         evdsptc_event_cancel(observerparam->caught);
-        TRACE("observer %p released event %p.", (void*)observer, (void*)observerparam->caught);
+        EVDTEST_TRACE("observer %p released event %p.", (void*)observer, (void*)observerparam->caught);
     }
     pthread_mutex_unlock(&context.mutex);
 }

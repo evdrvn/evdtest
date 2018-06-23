@@ -67,6 +67,7 @@ TEST(evdtest_test_group, start_error_envarg_empty_test){
     
     ret_start = evdtest_start(NULL, NULL);
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NOT_FOUND, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_NOT_FOUND, ret_stop);
@@ -81,6 +82,7 @@ TEST(evdtest_test_group, start_error_bad_lua_script_test){
 
     ret_start = evdtest_start(NULL, NULL);
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_BAD_LUA_SCRIPT, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_BAD_LUA_SCRIPT, ret_stop);
@@ -95,6 +97,7 @@ TEST(evdtest_test_group, start_error_runtime_lua_script_test){
 
     ret_start = evdtest_start(NULL, NULL);
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_ANY_LUA_EXCEPTIONS, ret_stop);
@@ -128,10 +131,9 @@ TEST(evdtest_test_group, start_and_join_test){
     
     done = true;
     evdsptc_event_waitdone(&ev);
- 
-    ret_start = evdtest_start(NULL, NULL);
-    CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
-    ret_stop  = evdtest_join();
+    
+    evdsptc_destroy(&ctx, true);
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_stop);
@@ -147,6 +149,7 @@ TEST(evdtest_test_group, lua_postevent_test){
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_stop);
@@ -162,6 +165,7 @@ TEST(evdtest_test_group, abort_test){
     ret_start = evdtest_start(NULL, NULL);
     evdtest_abort();
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_ANY_LUA_EXCEPTIONS, ret_stop);
@@ -177,6 +181,7 @@ TEST(evdtest_test_group, timeout_main_test){
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_ANY_LUA_EXCEPTIONS, ret_stop);
@@ -192,6 +197,7 @@ TEST(evdtest_test_group, timeout_coroutine_test){
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_ANY_LUA_EXCEPTIONS, ret_stop);
@@ -207,23 +213,24 @@ TEST(evdtest_test_group, ignore_cancel_test){
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
+    evdtest_destroy();
     
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_stop);
     check_test_done(true);
 }
 
-
 TEST(evdtest_test_group, residue_test){
     evdtest_error_t ret_start = EVDTEST_ERROR_NONE;
     evdtest_error_t ret_stop  = EVDTEST_ERROR_NONE;
 
     setenv(EVDTEST_ENV_TEST_CASE, "lua/test_residue.lua", 1);
-    
+
     ret_start = evdtest_start(NULL, NULL);
     CHECK_EQUAL(EVDTEST_ERROR_NONE, EVDTEST_POSTEVENT("hello world"));
     ret_stop  = evdtest_join();
-
+    evdtest_destroy();
+    
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_start);
     CHECK_EQUAL(EVDTEST_ERROR_ANY_LUA_EXCEPTIONS, ret_stop);
     check_test_done(false);
@@ -256,9 +263,10 @@ TEST(evdtest_test_group, capture_test){
     CHECK_EQUAL(EVDTEST_ERROR_NONE, ret_stop);
     ret_stop  = evdtest_join();
     
-    evdsptc_destory(&ctx_relay, true); 
-    evdsptc_destory(&ctx_countup, true); 
+    evdsptc_destroy(&ctx_relay, true); 
+    evdsptc_destroy(&ctx_countup, true); 
     
+    evdtest_destroy();
     check_test_done(true);
 }
 
