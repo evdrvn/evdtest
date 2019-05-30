@@ -306,6 +306,7 @@ static evdtest_error_t evdtest_event_init(
     eventparam->capture = false;
     eventparam->caught = NULL;
     eventparam->observer_count = EVDTEST_EVENT_NOT_YET_HANDLING;
+    eventparam->destroy_delay = 3;
 
     evdsptc_event_init(*event, eventhandler, (void*)eventparam, auto_destruct, event_destructor);
     EVDTEST_TRACE("event %p has been initialized.", *event);
@@ -597,11 +598,13 @@ evdtest_error_t evdtest_wait(bool finalize){
         eventparam = (evdtest_eventparam_t*)evdsptc_event_getparam(event);
 
         if(eventparam->observer_count < 0){
-            EVDTEST_TRACE("suspended event %p have been destroying...", (void*)event);
-            evdsptc_listelem_remove(iterator);
-            evdsptc_event_destroy(event);
-            iterator = &copied;
-            count--;
+            if(eventparam->destroy_delay-- <= 0){
+                EVDTEST_TRACE("suspended event %p have been destroying...", (void*)event);
+                evdsptc_listelem_remove(iterator);
+                evdsptc_event_destroy(event);
+                iterator = &copied;
+                count--;
+            }
         }else if(eventparam->observer_count == 0){
             EVDTEST_TRACE("suspended event %p done, is_lua = %d", (void*)event, evdtest_thread_is_lua(eventparam->thread));
             if(!evdtest_thread_is_lua(eventparam->thread)){
@@ -641,7 +644,7 @@ evdtest_error_t evdtest_wait(bool finalize){
         clock_gettime(CLOCK_REALTIME, &now);
         EVDTEST_TRACE("evdtest resumed!!!, now = %d", (int)now.tv_sec);
     }else{
-
+        /* do nothing */
     }
     
     return ret;

@@ -94,6 +94,7 @@ typedef struct {
     int observer_count;
     bool capture;
     evdsptc_event_t* caught;
+    int destroy_delay;
 } evdtest_eventparam_t;
 
 extern evdtest_error_t evdtest_start(evdtest_eventformat_t formatter, void (*error_callback)(void));

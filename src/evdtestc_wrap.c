@@ -4547,6 +4547,56 @@ fail:
 }
 
 
+static int _wrap_evdtest_eventparam_t_destroy_delay_set(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
+  int arg2 ;
+  
+  SWIG_check_num_args("evdtest_eventparam_t::destroy_delay",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::destroy_delay",1,"evdtest_eventparam_t *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("evdtest_eventparam_t::destroy_delay",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
+    SWIG_fail_ptr("evdtest_eventparam_t_destroy_delay_set",1,SWIGTYPE_p_evdtest_eventparam_t);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->destroy_delay = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_evdtest_eventparam_t_destroy_delay_get(lua_State* L) {
+  int SWIG_arg = 0;
+  evdtest_eventparam_t *arg1 = (evdtest_eventparam_t *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("evdtest_eventparam_t::destroy_delay",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("evdtest_eventparam_t::destroy_delay",1,"evdtest_eventparam_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_evdtest_eventparam_t,0))){
+    SWIG_fail_ptr("evdtest_eventparam_t_destroy_delay_get",1,SWIGTYPE_p_evdtest_eventparam_t);
+  }
+  
+  result = (int) ((arg1)->destroy_delay);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_new_evdtest_eventparam_t(lua_State* L) {
   int SWIG_arg = 0;
   evdtest_eventparam_t *result = 0 ;
@@ -4588,6 +4638,7 @@ static swig_lua_attribute swig_evdtest_eventparam_t_attributes[] = {
     { "observer_count", _wrap_evdtest_eventparam_t_observer_count_get, _wrap_evdtest_eventparam_t_observer_count_set },
     { "capture", _wrap_evdtest_eventparam_t_capture_get, _wrap_evdtest_eventparam_t_capture_set },
     { "caught", _wrap_evdtest_eventparam_t_caught_get, _wrap_evdtest_eventparam_t_caught_set },
+    { "destroy_delay", _wrap_evdtest_eventparam_t_destroy_delay_get, _wrap_evdtest_eventparam_t_destroy_delay_set },
     {0,0,0}
 };
 static swig_lua_method swig_evdtest_eventparam_t_methods[]= {
